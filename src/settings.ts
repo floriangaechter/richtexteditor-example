@@ -28,5 +28,10 @@ export const settings = defineSettings({
             label: 'An image',
             type: 'assetInput',
         },
+        {
+            id: 'myLinkchooser',
+            label: 'Linkchooser',
+            type: 'linkChooser',
+        },
     ],
 });
