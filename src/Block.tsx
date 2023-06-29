@@ -8,6 +8,24 @@ type Settings = {
     myTitle: string;
     myRichTextField: string;
     myLinkchooser: SearchResult;
+    columns: number;
+    gutter: string;
+    hasCustomGutter: boolean;
+    customGutter: string;
+};
+
+const columnsTailwindMap: Record<Settings['columns'], string> = {
+    1: 'tw-columns-1',
+    2: 'tw-columns-2',
+    3: 'tw-columns-3',
+    4: 'tw-columns-4',
+};
+
+const gutterTailwindMap: Record<Settings['gutter'], string> = {
+    Auto: 'tw-gap-[4px]',
+    S: 'tw-gap-[10px]',
+    M: 'tw-gap-[30px]',
+    L: 'tw-gap-[50px]',
 };
 
 export const AnExampleBlock: FC<BlockProps> = ({ appBridge }) => {
@@ -19,7 +37,7 @@ export const AnExampleBlock: FC<BlockProps> = ({ appBridge }) => {
     const [html, setHtml] = useState<string | null>(null);
 
     // this is how you can access the link from the linkchooser
-    console.log(blockSettings.myLinkchooser.link);
+    console.log(blockSettings);
 
     useEffect(() => {
         (async () => {
@@ -40,7 +58,14 @@ export const AnExampleBlock: FC<BlockProps> = ({ appBridge }) => {
                     value={blockSettings.myRichTextField}
                 />
             ) : (
-                <div dangerouslySetInnerHTML={{ __html: html || '<br />' }} />
+                <div
+                    className={`${columnsTailwindMap[blockSettings.columns]} ${
+                        !blockSettings.hasCustomGutter ? gutterTailwindMap[blockSettings.gutter] : ''
+                    }`}
+                    style={blockSettings.hasCustomGutter ? { gap: blockSettings.customGutter } : undefined}
+                >
+                    <div dangerouslySetInnerHTML={{ __html: html || '<br />' }} />{' '}
+                </div>
             )}
             {blockAssets.myImage && <img src={blockAssets.myImage[0].previewUrl} alt="" />}
         </div>
